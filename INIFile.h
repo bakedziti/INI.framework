@@ -13,17 +13,14 @@
 // Copyright: 2010 Mirek Rusin
 // License: Apache 2.0 License
 //
-@interface INIFile : NSObject {
-  NSMutableArray *entries;
-}
+@interface INIFile : NSObject
 
-@property (nonatomic, retain) NSMutableArray *entries;
-@property (assign, readwrite) NSString *contents;
+@property (nonatomic, strong) NSMutableArray *entries;
 
 - (id) initWithUTF8ContentsOfFile: (NSString *) path error: (NSError **) error;
 - (id) initWithContentsOfFile: (NSString *) path encoding: (NSStringEncoding) encoding error: (NSError **) error;
 
-
+- (void) setContents: (NSString *) contents;
 - (NSIndexSet *) sectionIndexes;
 - (NSArray *) sections;
 

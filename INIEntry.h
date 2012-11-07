@@ -5,27 +5,23 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-  INIEntryTypeSection,
-  INIEntryTypeKeyValue,
-  INIEntryTypeComment,
-  INIEntryTypeOther
+    INIEntryTypeSection,
+    INIEntryTypeKeyValue,
+    INIEntryTypeComment,
+    INIEntryTypeOther
 } INIEntryType;
 
 typedef struct {
-  NSRange key;
-  NSRange value;
-  NSRange section;
+    NSRange key;
+    NSRange value;
+    NSRange section;
 } INIEntryInfo;
 
-@interface INIEntry : NSObject {
-  NSString *line;
-  INIEntryInfo info;
-  INIEntryType type;
-}
+@interface INIEntry : NSObject
 
-@property (nonatomic, retain) NSString *line;
-@property (assign) INIEntryInfo info;
-@property (assign) INIEntryType type;
+@property (nonatomic, strong) NSString *line;
+@property (nonatomic, assign) INIEntryInfo info;
+@property (nonatomic, assign) INIEntryType type;
 
 - (id) init;
 - (id) initWithLine: (NSString *) line;

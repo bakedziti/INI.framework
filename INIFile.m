@@ -6,64 +6,68 @@
 
 @implementation INIFile
 
-@synthesize entries;
-@synthesize contents;
-
 - (id) init {
-  if (self = [super init]) {
-    self.entries = [NSMutableArray array];
-  }
-  return self;
+    if (self = [super init]) {
+        self.entries = [NSMutableArray array];
+    }
+    return self;
 }
 
 - (id) initWithUTF8ContentsOfFile: (NSString *) path error: (NSError **) error {
-  if (self = [self init]) {
-    self.contents = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: error];
-  }
-  return self;
+    if (self = [self init]) {
+        self.contents = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: error];
+    }
+    return self;
 }
 
 - (id) initWithContentsOfFile: (NSString *) path encoding: (NSStringEncoding) encoding error: (NSError **) error {
-  if (self = [self init]) {
-    self.contents = [NSString stringWithContentsOfFile: path encoding: encoding error: error];
-  }
-  return self;
+    if (self = [self init]) {
+        self.contents = [NSString stringWithContentsOfFile: path encoding: encoding error: error];
+    }
+    return self;
 }
 
-- (void) setContents: (NSString *) contents_ {
-  self.entries = [NSMutableArray array];
-  for (NSString *line in [contents_ componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]]) {
-    [self.entries addObject: [[INIEntry alloc] initWithLine: line]];
-  }
+- (void) setContents: (NSString *) contents {
+    
+    self.entries = [NSMutableArray array];
+    
+    NSArray *splits = [contents componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+    
+    for (NSString *line in splits) {
+        
+        [self.entries addObject: [[INIEntry alloc] initWithLine: line]];
+    }
 }
 
 - (NSString *) valueForKey: (NSString *) key {
-  return nil;
+    return nil;
 }
 
 - (NSMutableArray *) valuesForKey: (NSString *) key {
-  return [NSMutableArray array];
+    return [NSMutableArray array];
 }
 
 - (NSString *) valueForKey: (NSString *) key inSection: (NSString *) section {
-  return [[self valuesForKey: key inSection: section] objectAtIndex: 0];
+    return [[self valuesForKey: key inSection: section] objectAtIndex: 0];
 }
 
 - (NSMutableArray *) valuesForKey: (NSString *) key inSection: (NSString *) section {
-  return [NSMutableArray array];
+    return [NSMutableArray array];
 }
 
 - (void) setValue: (NSString *) value forKey: (NSString *) key inSection: (NSString *) section {
 }
 
 - (NSIndexSet *) sectionIndexes {
-  return [self.entries indexesOfObjectsPassingTest: ^(id entry, NSUInteger index, BOOL *stop) {
-    return (BOOL)((INIEntry *)[entry entryType] == INIEntryTypeSection);
-  }];
+    
+    return [self.entries indexesOfObjectsPassingTest: ^(id entry, NSUInteger index, BOOL *stop) {
+        
+        return (BOOL)([(INIEntry *)entry type] == INIEntryTypeSection);
+    }];
 }
 
 - (NSArray *) sections {
-  return [self.entries objectsAtIndexes: [self sectionIndexes]];
+    return [self.entries objectsAtIndexes: [self sectionIndexes]];
 }
 
 @end
